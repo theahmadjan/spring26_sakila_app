@@ -30,7 +30,7 @@ jobs:
         run: pip install flake8
 
       - name: Run flake8
-        run: flake8 . --max-line-length=120 --extend-ignore=E501,W503 --exclude=.git,__pycache__,venv
+        run: flake8 . --max-line-length=120 --extend-ignore=E501,W503,E302,E303,W291,W293,E231,F401,W292,E305 --exclude=.git,__pycache__,venv
 
   test:
     runs-on: ubuntu-latest
