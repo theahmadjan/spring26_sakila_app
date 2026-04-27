@@ -1,14 +1,14 @@
 # ============================================================
 # Configuration File — Sakila Flask Application
 # Author: Muhammad Ahmad Jan
-# roll no: f2023-127
 # Date: 2026-04-27
+# Last Modified: 2026-04-27
 # Description: Database and application configuration settings
-
-# Sakila App — Main Configuration
-# Team Member: Muhammad Ahmad Jan (Second branch different changes)
+#
+# Team Member: Muhammad Ahmad Jan2.0
 # Date: 2026-04-27
 # Purpose: Core settings for database connectivity
+# Template: Standard Sakila App File Header v1.0
 # ============================================================
 # Name: Abdul Raffay Qasim
 # Name: Team Member
