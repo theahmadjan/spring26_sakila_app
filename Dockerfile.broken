@@ -12,3 +12,43 @@ EXPOSE 5000
 EXPOSE 3306
 EXPOSE 22
 CMD ["python", "app.py"]
+# Stage 1: Build dependencies
+FROM python:3.9-slim AS builder
+
+WORKDIR /app
+
+# Copy ONLY requirements first (layer cache optimization)
+COPY requirements.txt .
+
+# Install dependencies into a separate location for copying
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+
+# Stage 2: Final minimal image
+FROM python:3.9-slim
+
+LABEL maintainer="Your Name <your.email@example.com>"
+LABEL version="1.0.0"
+LABEL description="Sakila Flask Application"
+
+WORKDIR /app
+
+# Copy installed packages from builder stage
+COPY --from=builder /install /usr/local
+
+# Copy application code LAST (so code changes don't bust dep cache)
+COPY . .
+
+# Create non-root user and switch to it
+RUN useradd --create-home --shell /bin/bash appuser && \
+    chown -R appuser:appuser /app
+USER appuser
+
+# Only expose the port this app actually uses
+EXPOSE 5000
+
+# Health check to verify app is responding
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5000')" || exit 1
+
+CMD ["python", "app.py"]

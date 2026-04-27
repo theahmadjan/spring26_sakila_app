@@ -1,21 +1,46 @@
-# Use an official Python runtime as a base image
-FROM python:3.9-slim
+# Maintainer and version information
+LABEL maintainer="Ahmad <ahmad@example.com>"
+LABEL version="1.0.0"
+LABEL description="Sakila Flask Application - Optimized"
 
-# Set the working directory inside the container
+# Stage 1: Builder
+FROM python:3.9-slim AS builder
+
 WORKDIR /app
 
-# Copy the requirements file into the container at /app
+# Copy ONLY requirements first for better layer caching
+# (dependency layer only rebuilds when requirements.txt changes)
 COPY requirements.txt .
 
-# Install the required Python packages
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies with no cache to reduce image size
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
-# Copy the rest of your application into the container
+
+# Stage 2: Final minimal image
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Copy installed packages from builder stage only
+COPY --from=builder /install /usr/local
+
+# Copy application code last
+# (code changes won't bust the dependency cache)
 COPY . .
 
-# Expose the port Flask will run on
+# Create non-root user for security
+# Running as root inside container is a security risk
+RUN useradd --create-home --shell /bin/bash appuser && \
+    chown -R appuser:appuser /app
+
+USER appuser
+
+# Only expose the port Flask actually uses
 EXPOSE 5000
 
+# Health check so Docker knows if app is actually working
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5000')" || exit 1
 
-# Run the Flask application
+# Run the application
 CMD ["python", "app.py"]
