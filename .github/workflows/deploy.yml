@@ -1,4 +1,4 @@
-name: Conditional Deployment
+name: Conditional deployment
 
 on:
   push:
