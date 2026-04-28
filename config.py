@@ -1,28 +1,3 @@
-
-# ============================================================
-# Configuration File - Sakila Flask Application
-# Author: Muhammad Ahmad Jan
-# Date: 2026-04-27
-# Last Modified: 2026-04-27
-# Description: Database and application configuration settings
-#
-# Team Member: Muhammad Ahmad Jan2.0
-# Date: 2026-04-27
-# Purpose: Core settings for database connectivity
-# Template: Standard Sakila App File Header v1.0
-# ============================================================
-# Name: Abdul Raffay Qasim
-# Name: Team Member
-# Date: 2026-04-23
-# Minor improvement after PR review
-# Added after review feedback
-# Author: Urwah Taj
-# Date: 2026-04-23
-# Purpose: Database configuration for Sakila Flask Application
-# Author: Team Member = Aliyah Cheema
-# Date: 2026-04-23
-# Purpose: Health check configuration merged from feature/add-healthcheck
-
 import os
 MYSQL_HOST = os.environ.get('MYSQL_HOST', 'sakila-db-server')
 MYSQL_USER = os.environ.get('MYSQL_USER', 'root')
