@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 name: Conditional deployment
+=======
+name: Conditional Deployment
+>>>>>>> Stashed changes
 
 on:
   push:
@@ -73,4 +77,8 @@ jobs:
             --latest
 
       - name: Simulate Slack notification
+<<<<<<< Updated upstream
         run: echo "Slack notification: Deployment to production successful"
+=======
+        run: echo "Slack notification: Deployment to production successful"
+>>>>>>> Stashed changes
